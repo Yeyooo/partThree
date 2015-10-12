@@ -109,6 +109,18 @@ void generarTablaConDatosArchivo(Nodo *unaTabla[m]){
 
 }
 
+Nodo *buscarDatosEnTabla(Nodo * unaTabla[m], int indiceHashRut, long unRut){
+    Nodo *recorrer=unaTabla[indiceHashRut];
+    while(recorrer!=NULL){
+        if(recorrer->datos.rut==unRut){
+            return(recorrer);
+        }
+        recorrer=recorrer->sgte_dato;
+    }
+    return(NULL);
+
+}
+
 
 
 
