@@ -13,6 +13,11 @@
 #define STRING_H
 #endif
 
+#ifndef TIME_H
+#include <time.h>
+#define TIME_H
+#endif
+
 #define m 10
 
 typedef long int Clave;
@@ -52,48 +57,19 @@ void iniciarNodosTabla(Nodo *unaTabla[m]){
 
 }
 
-void mostrarTabla(Nodo *unaTabla[m]){
-    int i = 0;
-    while( i < m ){
-        printf("table[%d]: %d, table[%d]->sgte: %d\n", i, unaTabla[i]->datos.rut, i, unaTabla[i]->sgte_dato->datos.rut);
-        i++;
-    }
 
-}
-
-/*void generarTablaConDatos(Nodo *unaTabla[m]){
-    //FILE *fp=fopen("aleatorios.csv", "r");
-    long x;
-    long contador=0;
-    long rutI;
-    printf("ingrese rut\n");
-    scanf("%ld", &rutI);
-
-    if(unaTabla[hash(rutI)]->datos.rut==0){
-        unaTabla[hash(rutI)]=iniciarNodo(rutI);
-    }else{
-        Nodo *aux=unaTabla[hash(rutI)]->sgte_dato;
-        unaTabla[hash(rutI)]->sgte_dato=iniciarNodo(rutI);
-        unaTabla[hash(rutI)]->sgte_dato->sgte_dato=aux;
-    }
-
-
-
-
-
-}*/
 
 void generarTablaConDatosArchivo(Nodo *unaTabla[m]){
     FILE *fp=fopen("datos.csv", "r");
     long rutI;
     char apellidop[30], apellidom[30], nombres[100];
+    clock_t start = clock();
 
     while(!feof(fp)){
-        fscanf(fp, "%ld;", &rutI); //fscanf(fp, "%ld %s %s %s %[^\n]", &rutI, &apellidop, &apellidom, &nombres);
+        fscanf(fp, "%ld;", &rutI);
         fscanf(fp, "%[^;];", &apellidop);
         fscanf(fp, "%[^;];", &apellidom);
         fscanf(fp, "%[^\n];", &nombres);
-        printf("rut: %ld app: %s apm: %s nombres: %s\n", rutI, apellidop, apellidom, nombres);
 
         if(unaTabla[hash(rutI)]->datos.rut==0){
             unaTabla[hash(rutI)]=iniciarNodo(rutI, nombres, apellidop, apellidom);
@@ -105,14 +81,17 @@ void generarTablaConDatosArchivo(Nodo *unaTabla[m]){
     }
 
     fclose(fp);
+    printf("Tiempo transcurrido: %f\n", ((double)clock() - start) / CLOCKS_PER_SEC);
 
 
 }
 
 Nodo *buscarDatosEnTabla(Nodo * unaTabla[m], int indiceHashRut, long unRut){
     Nodo *recorrer=unaTabla[indiceHashRut];
+    clock_t start = clock();
     while(recorrer!=NULL){
         if(recorrer->datos.rut==unRut){
+            printf("Tiempo transcurrido de Búsqueda: %f\n", ((double)clock() - start) / CLOCKS_PER_SEC);
             return(recorrer);
         }
         recorrer=recorrer->sgte_dato;
