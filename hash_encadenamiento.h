@@ -18,7 +18,7 @@
 #define TIME_H
 #endif
 
-#define m 10
+#define m 9511
 
 typedef long int Clave;
 
